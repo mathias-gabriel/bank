@@ -1,0 +1,5 @@
+CREATE TABLE account (
+    id           varchar(80) PRIMARY KEY,
+    account_balance         float,
+    currency     varchar(32)
+);
