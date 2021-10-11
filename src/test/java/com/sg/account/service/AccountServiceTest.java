@@ -2,7 +2,9 @@ package com.sg.account.service;
 
 import com.sg.account.dto.AccountDTO;
 import com.sg.account.dto.BankingOperationDTO;
+import com.sg.account.dto.TransfertOperationDTO;
 import com.sg.account.model.Account;
+import com.sg.account.model.Currency;
 import com.sg.account.repositories.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -69,5 +71,31 @@ public class AccountServiceTest {
         assertThat(accountDTO.isPresent()).isTrue();
         assertThat(accountDTO.get().getAccountBalance()).isEqualTo(160.0);
 
+    }
+
+    @Test
+    void transfert() {
+        // Initialisation des entities
+        Account fromAccount = Account.builder().id("id1").accountBalance(1500.0).currency(Currency.EUR).build();
+        Account toAccount = Account.builder().id("id2").accountBalance(1000.0).currency(Currency.EUR).build();
+
+        // Définition des fonctions mockées
+        when(accountRepository.findById("id1") ).thenReturn( Optional.of(fromAccount) );
+        when(accountRepository.findById("id2") ).thenReturn( Optional.of(toAccount) );
+
+        // Given
+        TransfertOperationDTO transfertOperationDTO = TransfertOperationDTO
+                .builder()
+                .amount(102.5)
+                .fromtIdAccount("id1")
+                .toIdAccount("id2")
+                .currency(Currency.EUR)
+                .build();
+
+        // When
+        Optional<AccountDTO> accountDTO = accountService.transfert(transfertOperationDTO);
+
+        assertThat(accountDTO.isPresent()).isTrue();
+        assertThat(accountDTO.get().getAccountBalance()).isEqualTo(1397.5);
     }
 }

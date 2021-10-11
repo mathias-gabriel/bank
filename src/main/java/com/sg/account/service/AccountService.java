@@ -4,6 +4,7 @@ import com.sg.account.core.BankingOperation;
 import com.sg.account.core.BankingOpperationException;
 import com.sg.account.dto.AccountDTO;
 import com.sg.account.dto.BankingOperationDTO;
+import com.sg.account.dto.TransfertOperationDTO;
 import com.sg.account.model.Account;
 import com.sg.account.repositories.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -48,4 +49,20 @@ public class AccountService {
         return Optional.of( new AccountDTO(account.get()) );
     }
 
+    @Transactional
+    public Optional<AccountDTO> transfert(TransfertOperationDTO transfertOperationDTO){
+
+        Optional<Account> fromAccount = accountRepository.findById(transfertOperationDTO.getFromtIdAccount());
+        if(fromAccount.isEmpty()) throw new BankingOpperationException("issuing bank account was not found");
+
+        Optional<Account> toAccount = accountRepository.findById(transfertOperationDTO.getToIdAccount());
+        if(toAccount.isEmpty()) throw new BankingOpperationException("bank account was not found");
+
+        BankingOperation operation = new BankingOperation(fromAccount.get());
+        Account toAccountWithTransfert = operation.transfert(toAccount.get(), transfertOperationDTO.getAmount());
+        accountRepository.save(operation.getAccount());
+        accountRepository.save(toAccountWithTransfert);
+
+        return Optional.of( new AccountDTO(operation.getAccount()) );
+    }
 }

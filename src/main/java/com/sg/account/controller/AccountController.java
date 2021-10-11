@@ -3,6 +3,7 @@ package com.sg.account.controller;
 import com.sg.account.core.BankingOpperationException;
 import com.sg.account.dto.AccountDTO;
 import com.sg.account.dto.BankingOperationDTO;
+import com.sg.account.dto.TransfertOperationDTO;
 import com.sg.account.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class AccountController {
             return ResponseEntity.ok(account.get());
         }
         catch (BankingOpperationException e) {
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -52,6 +54,22 @@ public class AccountController {
             return ResponseEntity.ok(account.get());
         }
         catch (BankingOpperationException e) {
+            log.error(e.getMessage());
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PutMapping("/transfert")
+    public ResponseEntity<AccountDTO> transfert(
+            @RequestBody TransfertOperationDTO transfert){
+
+        try {
+            Optional<AccountDTO> account = accountService.transfert(transfert);
+            return ResponseEntity.ok(account.get());
+        }
+        catch (BankingOpperationException e) {
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage());
         }

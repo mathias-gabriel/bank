@@ -24,6 +24,13 @@ public class BankingOperation {
         account.setAccountBalance(newAmmount);
     }
 
+    public Account transfert(Account toAccount, Double amountOfMoney){
+        withdrawAmountOfMoney(amountOfMoney);
+        Double newBalance = toAccount.getAccountBalance() + amountOfMoney;
+        toAccount.setAccountBalance(newBalance);
+        return toAccount;
+    }
+
     private Double accountBalanceAfterWithdrawByAccount(Double amountOfMoney){
         return account.getAccountBalance() - amountOfMoney;
     }
