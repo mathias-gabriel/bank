@@ -2,6 +2,7 @@ package com.sg.account.repositories;
 
 import com.sg.account.core.BankingOperation;
 import com.sg.account.model.Account;
+import com.sg.account.model.Currency;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,12 @@ public class AccountRepositoryTest {
     @Test
     public void should_find_all_accounts() {
 
-        Account account = Account.builder().accountBalance(5.5).id("id1").build();
+        Account account = Account
+                .builder()
+                .accountBalance(5.5)
+                .id("id1")
+                .currency(Currency.EUR)
+                .build();
         accountRepository.save(account);
 
         Iterable<Account> accounts = accountRepository.findAll();
@@ -36,7 +42,12 @@ public class AccountRepositoryTest {
     public void should_be_able_to_update_an_account() {
 
         String id = "id1";
-        Account account = Account.builder().accountBalance(150.0).id(id).build();
+        Account account = Account
+                .builder()
+                .accountBalance(150.0)
+                .id(id)
+                .currency(Currency.EUR)
+                .build();
         accountRepository.save(account);
 
         BankingOperation operation = new BankingOperation(account);
