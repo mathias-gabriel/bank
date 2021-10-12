@@ -6,6 +6,7 @@ import com.sg.account.dto.TransfertOperationDTO;
 import com.sg.account.model.Account;
 import com.sg.account.model.Currency;
 import com.sg.account.repositories.AccountRepository;
+import com.sg.account.repositories.TransferRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -24,6 +25,9 @@ public class AccountServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
+
+    @Mock
+    private TransferRepository transferRepository;
 
     @Test
     void withdrawAmountOfMoney() {

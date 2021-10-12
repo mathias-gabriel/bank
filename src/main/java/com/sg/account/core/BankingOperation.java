@@ -1,7 +1,11 @@
 package com.sg.account.core;
 
 import com.sg.account.model.Account;
+import com.sg.account.model.Currency;
+import com.sg.account.model.TransferCommand;
 import lombok.Getter;
+
+import java.time.OffsetDateTime;
 
 @Getter
 public class BankingOperation {
@@ -24,11 +28,20 @@ public class BankingOperation {
         account.setAccountBalance(newAmmount);
     }
 
-    public Account transfert(Account toAccount, Double amountOfMoney){
+    public TransferCommand transfert(Account toAccount, Double amountOfMoney, Currency currency){
         withdrawAmountOfMoney(amountOfMoney);
         Double newBalance = toAccount.getAccountBalance() + amountOfMoney;
         toAccount.setAccountBalance(newBalance);
-        return toAccount;
+
+        TransferCommand transfer = TransferCommand.builder()
+                .fromAccount(this.getAccount())
+                .toAccount(toAccount)
+                .balance(amountOfMoney)
+                .date(OffsetDateTime.now())
+                .currency(currency)
+                .build();
+
+        return transfer;
     }
 
     private Double accountBalanceAfterWithdrawByAccount(Double amountOfMoney){

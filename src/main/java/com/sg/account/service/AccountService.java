@@ -6,7 +6,9 @@ import com.sg.account.dto.AccountDTO;
 import com.sg.account.dto.BankingOperationDTO;
 import com.sg.account.dto.TransfertOperationDTO;
 import com.sg.account.model.Account;
+import com.sg.account.model.TransferCommand;
 import com.sg.account.repositories.AccountRepository;
+import com.sg.account.repositories.TransferRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,12 @@ public class AccountService {
 
     private AccountRepository accountRepository;
 
+    private TransferRepository transferRepository;
+
     @Autowired
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, TransferRepository transferRepository) {
         this.accountRepository = accountRepository;
+        this.transferRepository = transferRepository;
     }
 
     @Transactional
@@ -59,10 +64,9 @@ public class AccountService {
         if(toAccount.isEmpty()) throw new BankingOpperationException("bank account was not found");
 
         BankingOperation operation = new BankingOperation(fromAccount.get());
-        Account toAccountWithTransfert = operation.transfert(toAccount.get(), transfertOperationDTO.getAmount());
-        accountRepository.save(operation.getAccount());
-        accountRepository.save(toAccountWithTransfert);
+        TransferCommand transfer = operation.transfert(toAccount.get(), transfertOperationDTO.getAmount(), transfertOperationDTO.getCurrency());
+        transferRepository.save(transfer);
 
-        return Optional.of( new AccountDTO(operation.getAccount()) );
+        return Optional.of( new AccountDTO(transfer.getFromAccount()) );
     }
 }

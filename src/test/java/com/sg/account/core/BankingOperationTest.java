@@ -2,6 +2,7 @@ package com.sg.account.core;
 
 import com.sg.account.model.Account;
 import com.sg.account.model.Currency;
+import com.sg.account.model.TransferCommand;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,10 +17,10 @@ class BankingOperationTest {
         Account toAccount = Account.builder().id("id2").accountBalance(1000.0).currency(Currency.EUR).build();
 
         BankingOperation operation = new BankingOperation(fromAccount);
-        Account toAccountUpdated = operation.transfert(toAccount, 112.5);
+        TransferCommand transfer = operation.transfert(toAccount, 112.5, Currency.EUR);
 
-        assertThat(operation.getAccount().getAccountBalance()).isEqualTo(1387.5);
-        assertThat(toAccountUpdated.getAccountBalance()).isEqualTo(1112.5);
+        assertThat(transfer.getFromAccount().getAccountBalance()).isEqualTo(1387.5);
+        assertThat(transfer.getToAccount().getAccountBalance()).isEqualTo(1112.5);
 
     }
 
