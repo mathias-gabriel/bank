@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.5.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id "org.flywaydb.flyway" version "8.0.0"
+
 }
 
 group = 'com.sg'
@@ -39,4 +41,22 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+flyway {
+	driver = 'org.postgresql.Driver'
+	url = 'jdbc:postgresql://localhost:5433/sg'
+	user = 'sg'
+	password = 'sg'
+	connectRetries = 10
+	//initSql = 'SET ROLE \'myuser\''
+	schemas = ['public']
+	//callbacks = ['com.mycompany.proj.CustomCallback', 'com.mycompany.proj.AnotherCallback']
+	skipDefaultCallbacks = false
+	cleanDisabled = false
+	//workingDirectory = 'C:/myproject'
+	//jdbcProperties = [
+	//		'someProperty' : 'someValue',
+	//		'someOtherProperty' : 'someOtherValue'
+	//]
 }

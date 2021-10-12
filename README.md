@@ -18,8 +18,10 @@ docker-compose up -d db redis
 ./gradlew test
 ```
 
-### Demarage du projet
+### Demarrage du projet
 
 ```
+./gradlew flywayClean
+./gradlew flywayMigrate
 ./gradlew bootRun
 ```
