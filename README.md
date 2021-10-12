@@ -1,6 +1,6 @@
 # Getting Started
 
-### Demarage de postgresql et redis
+### Demarrage de postgresql et redis
 
 ```
 docker-compose up -d db redis
