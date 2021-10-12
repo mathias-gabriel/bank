@@ -1,9 +1,9 @@
 # Getting Started
 
-### Demarage de la base de données
+### Demarage de postgresql et redis
 
 ```
-docker-compose up -d db
+docker-compose up -d db redis
 ```
 
 ### Compilation
