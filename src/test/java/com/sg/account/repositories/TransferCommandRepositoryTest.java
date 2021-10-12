@@ -1,6 +1,5 @@
 package com.sg.account.repositories;
 
-import com.sg.account.core.BankingOperation;
 import com.sg.account.model.Account;
 import com.sg.account.model.Currency;
 import com.sg.account.model.TransferCommand;
@@ -12,17 +11,16 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.OffsetDateTime;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureEmbeddedDatabase
-public class TransferRepositoryTest {
+public class TransferCommandRepositoryTest {
 
     @Autowired
-    private TransferRepository transferRepository;
+    private TransferCommandRepository transferCommandRepository;
 
     @Test
     public void should_find_all_accounts() {
@@ -49,9 +47,9 @@ public class TransferRepositoryTest {
                 .balance(10.3)
                 .build();
 
-        transferRepository.save(transfer);
+        transferCommandRepository.save(transfer);
 
-        Iterable<TransferCommand> transfers = transferRepository.findAll();
+        Iterable<TransferCommand> transfers = transferCommandRepository.findAll();
         int nOfAccount = 1;
         assertThat(transfers).hasSize(nOfAccount);
     }

@@ -2,11 +2,13 @@ package com.sg.account.service;
 
 import com.sg.account.dto.AccountDTO;
 import com.sg.account.dto.BankingOperationDTO;
-import com.sg.account.dto.TransfertOperationDTO;
+import com.sg.account.dto.TransferOperationDTO;
+import com.sg.account.dto.TransferQueryDTO;
 import com.sg.account.model.Account;
 import com.sg.account.model.Currency;
 import com.sg.account.repositories.AccountRepository;
-import com.sg.account.repositories.TransferRepository;
+import com.sg.account.repositories.TransferCommandRepository;
+import com.sg.account.repositories.TransferReadRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,7 +29,10 @@ public class AccountServiceTest {
     private AccountRepository accountRepository;
 
     @Mock
-    private TransferRepository transferRepository;
+    private TransferCommandRepository transferCommandRepository;
+
+    @Mock
+    private TransferReadRepository transferReadRepository;
 
     @Test
     void withdrawAmountOfMoney() {
@@ -88,7 +93,7 @@ public class AccountServiceTest {
         when(accountRepository.findById("id2") ).thenReturn( Optional.of(toAccount) );
 
         // Given
-        TransfertOperationDTO transfertOperationDTO = TransfertOperationDTO
+        TransferQueryDTO transferQueryDTO = TransferQueryDTO
                 .builder()
                 .amount(102.5)
                 .fromtIdAccount("id1")
@@ -97,7 +102,7 @@ public class AccountServiceTest {
                 .build();
 
         // When
-        Optional<AccountDTO> accountDTO = accountService.transfert(transfertOperationDTO);
+        Optional<AccountDTO> accountDTO = accountService.transfert(transferQueryDTO);
 
         assertThat(accountDTO.isPresent()).isTrue();
         assertThat(accountDTO.get().getAccountBalance()).isEqualTo(1397.5);
